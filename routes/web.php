@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function(){
     Route::prefix('keranjang')->name('keranjang')->group(function(){
         Route::get('/', [KeranjangController::class, 'index']);
         Route::post('tambah', [KeranjangController::class, 'tambah'])->name('.tambah');
+        Route::get('checkout', [KeranjangController::class, 'checkout'])->name('.checkout');
     });
     Route::prefix('pesan')->name('pesan')->group(function(){
         Route::post('/', [PesananController::class, 'pesan'])->name('.sekarang');
@@ -76,6 +77,7 @@ Route::middleware('auth')->group(function(){
     });
     Route::prefix('checkout')->name('checkout')->group(function(){
         Route::get('{id}', [CheckoutController::class, 'checkout']);
+        Route::get('keranjang', [CheckoutController::class, 'keranjang'])->name('.keranjang');
     });
 });
 

@@ -85,6 +85,44 @@
                 Subtotal Produk
             </div>
         </div>
+        @if (isset($keranjang))      
+        @php
+            $ttl = 0;
+        @endphp
+        @foreach ($keranjang as $item)
+        <div class="grid grid-cols-10 pt-4 border-b">
+            <div class="col-span-6">
+                <div class="flex items-center space-x-4">
+                    @php
+                        $gambar = json_decode($item->produk->gambar);
+                    @endphp
+                    <img src="{{ asset('upload/produk/'.$gambar[0].'') }}" class="w-12 h-12" alt="">
+                    <span class="">{{ $item->produk->nama_produk }}</span>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="flex items-center py-4">
+                    <span class="text-sm">Rp{{ number_format($item->produk->harga, 0, '', '.') }}</span>
+                </div>
+            </div>
+            <div class="flex justify-end pr-6">
+                <div class="flex items-center py-4">
+                    <span class="text-sm">{{ $item->jumlah }}</span>
+                </div>
+            </div>
+            <div class="flex justify-end col-span-2">
+                @php
+                    $subtotal = $item->produk->harga * $item->jumlah;
+                    $ttl += $subtotal;
+                @endphp
+                <div class="flex items-center p-4">
+                    <span class="text-sm">Rp{{ number_format($subtotal, 0, '', '.') }}</span>
+                </div>
+            </div>
+        </div>
+        @endforeach      
+        <div id="total-harga" class="hidden">{{ $ttl }}</div>
+        @else            
         <div class="grid grid-cols-10 pt-4">
             <div class="col-span-4">
                 <div class="flex items-center space-x-4">
@@ -94,13 +132,6 @@
                     <img src="{{ asset('upload/produk/'.$gambar[0].'') }}" class="w-12 h-12" alt="">
                     <span class="">{{ $produk->nama_produk }}</span>
                 </div>
-            </div>
-            <div class="col-span-2">
-                @if (isset($varian))
-                <div class="flex items-center py-4">
-                    <span class="text-sm text-gray-400">Varian: {{ $varian }}</span>
-                </div>
-                @endif
             </div>
             <div class="flex justify-center">
                 <div class="flex items-center py-4">
@@ -122,6 +153,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
     <div class="grid grid-cols-7 space-y-2 bg-rose-50 px-8 border-b border-dashed border-gray-300">
         <div class="border-r border-dashed border-gray-300 col-span-3 py-4 px-4">
@@ -159,8 +191,12 @@
     <div class="grid grid-cols-4 rounded-b bg-rose-50 px-12 py-6 border-b border-gray-400">
         <div class="col-span-3"></div>
         <div class="flex justify-end items-center">
+            @if (isset($keranjang))
+            <span class="text-sm text-gray-400 mr-2">Total Pesanan ({{ $keranjang->count() }} Produk):</span> 
+            @else
             <span class="text-sm text-gray-400 mr-2">Total Pesanan (1 Produk):</span> 
-            <span class="text-xl text-rose-600" id="harga-ongkir">Rp{{ number_format($subtotal, 0, '', '.') }}</span>
+            @endif
+            <span class="text-xl text-rose-600" id="harga-ongkir">Rp{{ number_format($ttl, 0, '', '.') }}</span>
         </div>
     </div>
     <div class="grid grid-cols-12 bg-white rounded-t mt-4 py-6 px-8">
@@ -231,7 +267,11 @@
     <div class="grid grid-cols-1 bg-white border-b border-dashed border-gray-300 py-8 px-8 space-y-4">
         <div class="flex justify-end text-sm text-gray-400 space-x-8">
             <span>Subtotal Produk:</span>
+            @if (isset($keranjang))
+            <span>Rp{{ number_format($ttl, 0, '', '.') }}</span>
+            @else
             <span>Rp{{ number_format($subtotal, 0, '', '.') }}</span>
+            @endif
         </div>
         <div class="flex justify-end text-sm text-gray-400 space-x-8">
             <span>Biaya Pengiriman:</span>
@@ -243,7 +283,11 @@
         </div>
         <div class="flex justify-end text-sm text-gray-400 space-x-8">
             <span>Total Pembayaran:</span>
+            @if (isset($keranjang))
+            <span id="totalan-semua" class="text-2xl font-semibold text-rose-600">Rp{{ number_format(($ttl+3000), 0, '', '.') }}</span>
+            @else
             <span id="totalan-semua" class="text-2xl font-semibold text-rose-600">Rp{{ number_format(($subtotal+3000), 0, '', '.') }}</span>
+            @endif
         </div>
     </div>
     <div class="grid grid-cols-1 bg-white rounded-b py-8 px-6 space-y-4">
@@ -252,11 +296,10 @@
                 @csrf
                 <input type="hidden" id="alamat-kirim" value="{{ $alamat[0]->id }}" name="alamat">
                 <input type="hidden" id="kirim-paket" name="paket">
+                @if (!isset($keranjang))
                 <input type="hidden" value="{{ $produk->id_produk }}" name="produk">
-                @if (isset($varian))
-                <input type="hidden" value="{{ $varian }}" name="varian">
-                @endif
                 <input type="hidden" value="{{ $qty }}" name="qty">
+                @endif
                 <input type="hidden" id="metode_byr" name="metode_byr">
                 <input type="hidden" name="total">
                 <button type="submit" class="w-56 text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-600 focus:ring-0 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2">Buat Pesanan</button>
@@ -463,19 +506,16 @@
         listMini.classList.remove('hidden')
     })
 </script>
-@if (isset($varian))
+@if (isset($keranjang))  
 <script>
     var user   = '{{ auth()->user()->id_user }}';
     var alamat = '{{ $alamat[0]->id }}';
-    var produk = '{{ $produk->id_produk }}';
-    var varian = '{{ $varian }}';
-    var qty    = '{{ $qty }}';
     var method = $("input[name=metode]");
     method.on('change', function(){
         var metode = $("input[name=metode]:checked").val();
         document.querySelector('#metode_byr').value = metode;
     });
-</script>    
+</script>
 @else
 <script>
     var user   = '{{ auth()->user()->id_user }}';
@@ -487,7 +527,7 @@
         var metode = $("input[name=metode]:checked").val();
         document.querySelector('#metode_byr').value = metode;
     });
-</script>    
+</script>
 @endif
 
 {{-- urusan alamat --}}
@@ -544,7 +584,7 @@
         console.log(province)
         if(province != 0){
             $.ajax({
-                url: '//user/alamat/kota',
+                url: '/user/alamat/kota',
                 type: 'GET',
                 data: {
                     province: province
@@ -583,33 +623,13 @@
             document.querySelector('#biaya-expedisi-2').classList.remove('hidden');
             var kirim = parseInt(total) + parseInt(biaya);
             var anka = kirim.toString();
-            function split_at_index(value, index)
-            {
-                return value.substring(0, index) + "." + value.substring(index);
-            }
 
-            if(anka.length > 3 && anka.length < 6){
-                var kiriman = split_at_index(anka, (anka.length - 3));
-            } else if(anka.length > 6){
-                var th = split_at_index(anka, (anka.length - 3));
-                var kiriman = split_at_index(th, (th.length - 7));
-            }
-            document.querySelector('#harga-ongkir').innerHTML = "Rp"+kiriman;
+            document.querySelector('#harga-ongkir').innerHTML = "Rp"+formatRupiah(anka);
             
             var totalan = parseInt(total) + parseInt(biaya) + 3000;
             var angkanya = totalan.toString();
-            function split_at_index(value, index)
-            {
-                return value.substring(0, index) + "." + value.substring(index);
-            }
-
-            if(angkanya.length > 3 && angkanya.length < 6){
-                var totalSemua = split_at_index(angkanya, (angkanya.length - 3));
-            } else if(angkanya.length > 6){
-                var th = split_at_index(angkanya, (angkanya.length - 3));
-                var totalSemua = split_at_index(th, (th.length - 7));
-            }
-            document.querySelector('#totalan-semua').innerHTML = "Rp"+totalSemua;
+            
+            document.querySelector('#totalan-semua').innerHTML = "Rp"+formatRupiah(angkanya);
             document.querySelector('input[type=hidden][name=total]').value = totalan;
 
             document.querySelector('#kapan-diterima').innerHTML = document.querySelector('#tgl-terima-'+id).innerHTML
@@ -622,6 +642,23 @@
             }
         }
     }
+
+    function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			rupiah     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+ 
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				rupiah += separator + ribuan.join('.');
+			}
+ 
+			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+			return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+		}
 </script>
 
 @endsection
