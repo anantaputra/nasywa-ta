@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminKategoriController;
+use App\Http\Controllers\Admin\AdminLaporanController;
 use App\Http\Controllers\Admin\AdminPesananController;
 use App\Http\Controllers\Admin\AdminProdukController;
+use App\Http\Controllers\Admin\AdminReturController;
 use App\Http\Controllers\Api\MidtransController;
 use App\Http\Controllers\Api\RajaOngkirController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +19,7 @@ use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\User\AlamatController;
 use App\Http\Controllers\User\ProfilController;
+use App\Http\Controllers\User\ReturController;
 use App\Http\Controllers\User\RiwayatController;
 use App\Http\Controllers\User\TagihanUserController;
 
@@ -30,9 +33,6 @@ use App\Http\Controllers\User\TagihanUserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('not', function(){
-    return view('pesan.nota');
-});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('detail/{id}', [HomeController::class, 'detail'])->name('detail');
@@ -71,9 +71,12 @@ Route::middleware('auth')->group(function(){
         Route::prefix('riwayat')->name('.riwayat')->group(function(){
             Route::get('/', [RiwayatController::class, 'index']);
             Route::get('{id}', [RiwayatController::class, 'nota'])->name('.nota');
+            Route::get('terima/{id}', [RiwayatController::class, 'terima'])->name('.terima');
         });
         Route::prefix('retur')->name('.retur')->group(function(){
-            Route::get('/');
+            Route::get('/', [ReturController::class, 'index']);
+            Route::get('{id}', [ReturController::class, 'tambah'])->name('.tambah');
+            Route::post('/', [ReturController::class, 'simpan'])->name('.simpan');
         });
     });
     Route::prefix('keranjang')->name('keranjang')->group(function(){
@@ -114,23 +117,24 @@ Route::prefix('admin')->name('admin')->middleware('auth')->group(function(){
     });
     Route::prefix('pesanan')->name('.pesanan')->group(function(){
         Route::get('/', [AdminPesananController::class, 'index']);
-
+        Route::get('detail/{id}', [AdminPesananController::class, 'detail'])->name('.detail');
+        Route::post('resi', [AdminPesananController::class, 'resi'])->name('.resi');
     });
     Route::prefix('transaksi')->name('.transaksi')->group(function(){
         Route::get('/');
     });
     Route::prefix('retur')->name('.retur')->group(function(){
-        Route::get('/');
+        Route::get('/', [AdminReturController::class, 'index']);
     });
     Route::prefix('laporan')->name('.laporan')->group(function(){
         Route::prefix('pesanan')->name('.pesanan')->group(function(){
-            Route::get('/');
+            Route::get('/', [AdminLaporanController::class, 'pesanan']);
         });
         Route::prefix('transaksi')->name('.transaksi')->group(function(){
-            Route::get('/');
+            Route::get('/', [AdminLaporanController::class, 'transaksi']);
         });
         Route::prefix('retur')->name('.retur')->group(function(){
-            Route::get('/');
+            Route::get('/', [AdminLaporanController::class, 'retur']);
         });
     });
 });

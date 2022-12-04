@@ -11,35 +11,44 @@
           <thead>
             <tr class="bg-gray-50">
               <th class="px-4 py-4 font-medium text-left text-gray-900">No</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Nama Pemesan</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Nama Produk</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Jumlah</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Varian</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Total Pembayaran</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Metode Pembayaran</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Status Pembayaran</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900">Kode Pesan</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Nama Penerima</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900">Alamat Penerima</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Tanggal Pesan</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900">Status</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Total Pesanan</th>
             </tr>
           </thead>
       
           <tbody class="divide-y divide-gray-600 bg-white">
-            @if (isset($transaksi))
+            @if (isset($pesanan))
                 @php
                     $no = 1;
                 @endphp
-                @foreach($transaksi as $item)
+                @foreach($pesanan as $item)
                 <tr>
-                  <td class="px-4 py-5 font-medium text-gray-900">{{ $no }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanannya->usernya->nama_depan }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanannya->produknya->nama_produk }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanannya->jumlah }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanannya->varian }}</td>
+                  <td class="px-4 py-5 font-medium text-gray-900">{{ $no++ }}</td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanan->id_pesanan }}</td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanan->alamat->nama }}</td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanan->alamat->alamat.', '.$item->pesanan->alamat->kota.', '.$item->pesanan->alamat->provinsi }}</td>
+                  <td class="px-4 py-5 text-gray-700">{{ Carbon\Carbon::parse($item->pesanan->created_at)->format('d M Y') }}</td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">
+                    @if ($item->pesanan->status == 'pending')
+                        Belum Dikirim
+                    @elseif ($item->pesanan->status == 'send')
+                        Dikirim
+                    @elseif ($item->pesanan->status == 'accepted')
+                        Diterima 
+                    @elseif ($item->pesanan->status == 'returned')
+                        Proses Retur 
+                    @elseif ($item->pesanan->status == 'retur accepted')
+                        Retur Diterima 
+                    @elseif ($item->pesanan->status == 'retur denied')
+                        Retur Ditolak 
+                    @endif
+                  </td>
                   <td class="px-4 py-5 text-gray-700 whitespace-nowrap">Rp{{ number_format($item->total, 0, '', '.') }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ ($item->metode == ('bca' || 'bni' || 'bri' || 'permata')) ? 'BANK '.strtoupper($item->metode) : strtoupper($item->metode) }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ strtoupper($item->status) }}</td>
                 </tr>
-                @php
-                    $no++;
-                @endphp
                 @endforeach
             @endif
           </tbody>

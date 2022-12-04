@@ -35,7 +35,7 @@ class KeranjangController extends Controller
             $item->jumlah = $request->qty;
             $item->save();
         }
-        return redirect()->route('keranjang');
+        return redirect()->back();
     }
 
     public function checkout()

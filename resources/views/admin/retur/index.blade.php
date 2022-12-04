@@ -11,16 +11,14 @@
           <thead>
             <tr class="bg-gray-50">
               <th class="px-4 py-4 font-medium text-left text-gray-900">No</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900">Nomor Transaksi</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900">Nomor Pesanan</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900">Nama</th>
               <th class="px-4 py-4 font-medium text-left text-gray-900">Keterangan</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900">Bukti Resi</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900">Bukti Foto Produk</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900">Alasan</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900">Status</th>
               <th class="px-4 py-4 font-medium text-left text-gray-900">Aksi</th>
-              {{-- <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Nama Pemesan</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Nama Produk</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Jumlah</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Varian</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Total Pembayaran</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Metode Pembayaran</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Status Pembayaran</th> --}}
             </tr>
           </thead>
       
@@ -32,13 +30,30 @@
                 @foreach($retur as $item)
                 <tr>
                   <td class="px-4 py-5 font-medium text-gray-900">{{ $no }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanannya->usernya->nama_depan }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanannya->produknya->nama_produk }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanannya->jumlah }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanannya->varian }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">Rp{{ number_format($item->total, 0, '', '.') }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ ($item->metode == ('bca' || 'bni' || 'bri' || 'permata')) ? 'BANK '.strtoupper($item->metode) : strtoupper($item->metode) }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ strtoupper($item->status) }}</td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanan->id_pesanan }}</td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->user->nama_depan }}</td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->keterangan }}</td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">
+                    <a onclick="window.open(`{{ asset('upload/retur/resi/'.$item->bukti_resi) }}`)" class="underline text-blue-600 cursor-pointer hover:text-blue-800 visited:text-purple-600">Bukti Resi</a>
+                  </td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">
+                    <a onclick="window.open(`{{ asset('upload/retur/produk/'.$item->bukti_produk) }}`)" class="underline text-blue-600 cursor-pointer hover:text-blue-800 visited:text-purple-600">Bukti Produk</a>
+                  </td>
+                  <td></td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">
+                    @if ($item->status == 'pending')
+                        Sedang Diproses
+                    @elseif ($item->status == 'accepted')
+                        Diterima
+                    @elseif ($item->status == 'denied')
+                        Ditolak
+                    @else
+                        Dibatalkan
+                    @endif
+                  </td>
+                  <td>
+
+                  </td>
                 </tr>
                 @php
                     $no++;

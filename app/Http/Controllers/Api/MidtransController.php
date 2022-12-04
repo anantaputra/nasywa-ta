@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
+use App\Models\Produk;
 use GuzzleHttp\Client;
+use App\Models\Keranjang;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -75,6 +77,14 @@ class MidtransController extends Controller
 
         $transaksi = Transaksi::where('id_transaksi', $json->order_id)->first();
         $transaksi->status = $json->transaction_status;
+
+        $keranjang = Keranjang::where('id_pesanan', $transaksi->id_pesanan)->get();
+        foreach ($keranjang as $item) {
+            $produk = Produk::find($item->id_produk);
+            $produk->stok = $produk->stok - $item->jumlah;
+            $produk->save();
+        }
+
         return $transaksi->save();
     }
 }

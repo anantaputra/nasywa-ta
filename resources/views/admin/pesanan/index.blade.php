@@ -11,12 +11,12 @@
           <thead>
             <tr class="bg-gray-50">
               <th class="px-4 py-4 font-medium text-left text-gray-900">No</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Nama Produk</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Jumlah</th>
               <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Nama Penerima</th>
               <th class="px-4 py-4 font-medium text-left text-gray-900">Alamat Penerima</th>
               <th class="px-4 py-4 font-medium text-left text-gray-900">Jasa Pengiriman</th>
-              <th class="px-4 py-4 font-medium text-left text-gray-900">Estimasi Pengiriman</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Estimasi Pengiriman</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap">Tanggal Pesan</th>
+              <th class="px-4 py-4 font-medium text-left text-gray-900">Status</th>
               <th class="px-4 py-4 font-medium text-left text-gray-900 whitespace-nowrap flex justify-center">Aksi</th>
             </tr>
           </thead>
@@ -29,10 +29,8 @@
                 @foreach($pesanan as $item)
                 <tr>
                   <td class="px-4 py-5 font-medium text-gray-900">{{ $no++ }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanan->produknya->nama_produk }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanan->jumlah }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanan->kirimnya->nama }}</td>
-                  <td class="px-4 py-5 text-gray-700">{{ $item->pesanan->kirimnya->alamat.', '.$item->pesanan->kirimnya->kota.', '.$item->pesanan->kirimnya->provinsi }}</td>
+                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">{{ $item->pesanan->alamat->nama }}</td>
+                  <td class="px-4 py-5 text-gray-700">{{ $item->pesanan->alamat->alamat.', '.$item->pesanan->alamat->kota.', '.$item->pesanan->alamat->provinsi }}</td>
                   @php
                       $pengiriman = $item->pesanan->pengiriman;
                       if($pengiriman != null){
@@ -48,9 +46,17 @@
                   @endphp
                   <td class="px-4 py-5 text-gray-700">{{ $jasa }}</td>
                   <td class="px-4 py-5 text-gray-700">{{ $estimasi }}</td>
-                  <td class="px-4 py-5 text-gray-700 whitespace-nowrap">
+                  <td class="px-4 py-5 text-gray-700">{{ Carbon\Carbon::parse($item->pesanan->created_at)->format('d M Y') }}</td>
+                  <td class="px-4 py-5 text-gray-700 text-center whitespace-nowrap">
+                    @if ($item->pesanan->resi != null)
+                        Dikirim
+                    @else
+                        Belum Dikirim
+                    @endif
+                  </td>
+                  <td class="px-4 py-5 text-gray-700 text-center whitespace-nowrap">
                     @if ($item->status == 'settlement')
-                      <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ">Kirim</button>
+                      <a href="{{ route('admin.pesanan.detail', ['id' => $item->pesanan->uuid]) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ">Detail</a>
                     @endif
                   </td>
                 </tr>
