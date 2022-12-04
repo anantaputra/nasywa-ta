@@ -23,6 +23,7 @@ class KeranjangController extends Controller
         // cek keranjang sudah ada item
         $produk = Produk::where('uuid', $request->uuid)->first();
         $item = Keranjang::where('id_user', auth()->user()->id_user)
+                ->where('checkout', false)
                 ->where('id_produk', $produk->id_produk)->first();
         if($item){
             $item->jumlah = $item->jumlah + $request->qty;
