@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -61,5 +62,19 @@ class MidtransController extends Controller
         }
         $data = json_decode($response->getBody());
         return $data;
+    }
+
+    public function handler(Request $request)
+    {
+        $json = json_decode($request->getContent());
+        $signature = hash('sha512', $json->order_id . $json->status_code . $json->gross_amount . env('MIDTRANS_SERVER_KEY'));
+
+        if($signature != $json->signature_key){
+            return abort(404);
+        }
+
+        $transaksi = Transaksi::where('id_transaksi', $json->order_id)->first();
+        $transaksi->status = $json->transaction_status;
+        return $transaksi->save();
     }
 }

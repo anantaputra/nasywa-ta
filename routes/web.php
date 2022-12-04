@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminKategoriController;
+use App\Http\Controllers\Admin\AdminPesananController;
 use App\Http\Controllers\Admin\AdminProdukController;
 use App\Http\Controllers\Api\MidtransController;
 use App\Http\Controllers\Api\RajaOngkirController;
@@ -111,7 +112,8 @@ Route::prefix('admin')->name('admin')->middleware('auth')->group(function(){
         Route::get('/');
     });
     Route::prefix('pesanan')->name('.pesanan')->group(function(){
-        Route::get('/');
+        Route::get('/', [AdminPesananController::class, 'index']);
+        
     });
     Route::prefix('transaksi')->name('.transaksi')->group(function(){
         Route::get('/');

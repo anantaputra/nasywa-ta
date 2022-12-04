@@ -5,28 +5,39 @@
     <span class="text-2xl">Tagihan Pembayaran Anda</span>
     @if (count($tagihan) > 0)
     @foreach ($tagihan as $item)
-    <a href="{{ route('user.tagihan.bayar', ['id' => $item->uuid]) }}" class="w-full flex flex-row items-center px-8 py-4 bg-white border rounded-xl mt-8">
-        <div class="w-3/4 flex flex-col justify-between p-4 leading-normal">
-            <h5 class="text-xl font-bold tracking-tight text-rose-600">{{ $item->id_transaksi }}</h5>
-            <h5 class="text-lg font-bold tracking-tight text-gray-900">Bank {{ strtoupper($item->metode) }}</h5>
-            <p class="font-semibold text-gray-700">Rp{{ number_format($item->total, 0, '', '.') }}</p>
-            @if ($item->status == 'pending')
-            <p class="mb-3 font-semibold text-rose-600">
-                Belum Bayar
-            </p>
-            @elseif ($item->status == 'settlement')
-            <p class="mb-3 font-semibold text-rose-600">
-                Berhasil
-            </p>
-            @else 
-            <p class="mb-3 font-semibold text-rose-600">
-                Gagal
-            </p>
-            @endif
+    <div class="w-full flex flex-row items-center px-8 py-4 bg-white border rounded-xl mt-8">
+        <div class="w-1/2 flex p-4 leading-normal">
+            <div class="w-2/5 flex flex-col">
+                <h5 class="font-semibold tracking-tight">No Transaksi</h5>
+                <h5 class="font-semibold tracking-tight">Metode Pembayaran</h5>
+                <p class="font-semibold">Total</p>
+                <p class="mb-3 font-semibold">
+                    Status
+                </p>
+            </div>
+            <div class="flex flex-col">
+                <h5 class="text-xl font-bold tracking-tight text-rose-600">{{ $item->id_transaksi }}</h5>
+                <h5 class="text-lg font-bold tracking-tight text-gray-900">Bank {{ strtoupper($item->metode) }}</h5>
+                <p class="font-semibold text-gray-700">Rp{{ number_format($item->total, 0, '', '.') }}</p>
+                @if ($item->status == 'pending')
+                <p class="mb-3 font-semibold text-rose-600">
+                    Belum Bayar
+                </p>
+                @elseif ($item->status == 'settlement')
+                <p class="mb-3 font-semibold text-rose-600">
+                    Berhasil
+                </p>
+                @else 
+                <p class="mb-3 font-semibold text-rose-600">
+                    Gagal
+                </p>
+                @endif
+            </div>
         </div>
-        <div class="text-rose-600">
+        <div class="w-1/2 flex justify-end items-center">
+            <a href="{{ route('user.tagihan.detail', ['id' => $item->uuid]) }}" class="px-8 py-2.5 bg-rose-600 text-white rounded-lg">Lihat</a>
         </div>
-    </a>
+    </div>
     @endforeach
     @else
     <div class="w-full grid place-content-center py-32">
