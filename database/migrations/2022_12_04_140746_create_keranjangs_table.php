@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('id_produk');
             $table->integer('jumlah');
             $table->boolean('checkout')->default(false);
+            $table->string('id_pesanan')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

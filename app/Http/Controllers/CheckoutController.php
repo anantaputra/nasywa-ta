@@ -80,4 +80,9 @@ class CheckoutController extends Controller
             }
         }
     }
+
+    public function simpan(Request $request)
+    {
+        
+    }
 }
