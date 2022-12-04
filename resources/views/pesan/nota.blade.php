@@ -33,7 +33,7 @@
             @endphp
             @foreach ($keranjang as $item)
             <div class="flex justify-between text-lg">
-                <span>{{ $item->produk->nama_produk }} x {{ $item->jumlah }}</span>
+                <span>{{ $item->produk->nama_produk }} (x {{ $item->jumlah }})</span>
                 <span class="text-rose-600 font-semibold">Rp{{ number_format($item->produk->harga * $item->jumlah, 0, 0, '.') }}</span>
             </div>
             @php

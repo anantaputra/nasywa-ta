@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         DB::table('users')->delete();
 
         $admin = User::create([
-            'id_user' => 'USR-0001',
+            'id_user' => 'USR-00001',
             'nama_depan' => 'Admin',
             'email' => 'admin@app.com',
             'password' => bcrypt('12345678'),
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
         $admin->assignRole('admin');
 
         $user = User::create([
-            'id_user' => 'USR-0002',
+            'id_user' => 'USR-00002',
             'nama_depan' => 'User',
             'email' => 'user@app.com',
             'password' => bcrypt('12345678'),
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
         $user->assignRole('user');
 
         $user = User::create([
-            'id_user' => 'USR-0003',
+            'id_user' => 'USR-00003',
             'nama_depan' => 'Ananta',
             'email' => 'ananta@app.com',
             'password' => bcrypt('12345678'),
