@@ -10,7 +10,8 @@ class AdminPesananController extends Controller
 {
     public function index()
     {
-        $pesanan = Transaksi::;
-        return view('admin.pesanan.index');
+        $pesanan = Transaksi::where('status', 'settlement')->get();
+        return $pesanan;
+        return view('admin.pesanan.index', compact('pesanan'));
     }
 }

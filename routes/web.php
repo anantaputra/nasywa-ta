@@ -17,6 +17,7 @@ use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\User\AlamatController;
 use App\Http\Controllers\User\ProfilController;
+use App\Http\Controllers\User\RiwayatController;
 use App\Http\Controllers\User\TagihanUserController;
 
 /*
@@ -29,9 +30,8 @@ use App\Http\Controllers\User\TagihanUserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('tagi', function(){
-    $data = MidtransController::bank_transfer(20000, 'bni');
-    return $data;
+Route::get('not', function(){
+    return view('pesan.nota');
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -69,7 +69,8 @@ Route::middleware('auth')->group(function(){
             Route::get('bayar/{id}', [TagihanUserController::class, 'bayar'])->name('.bayar');
         });
         Route::prefix('riwayat')->name('.riwayat')->group(function(){
-            Route::get('/');
+            Route::get('/', [RiwayatController::class, 'index']);
+            Route::get('{id}', [RiwayatController::class, 'nota'])->name('.nota');
         });
         Route::prefix('retur')->name('.retur')->group(function(){
             Route::get('/');
@@ -113,7 +114,7 @@ Route::prefix('admin')->name('admin')->middleware('auth')->group(function(){
     });
     Route::prefix('pesanan')->name('.pesanan')->group(function(){
         Route::get('/', [AdminPesananController::class, 'index']);
-        
+
     });
     Route::prefix('transaksi')->name('.transaksi')->group(function(){
         Route::get('/');

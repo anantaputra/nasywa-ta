@@ -2,24 +2,66 @@
 
 @section('content')
 <div class="w-full py-8">
-    <span class="text-2xl">Riwayat Pesanan</span>
-    <form method="POST" action="{{ route('user.profil.simpan') }}" class="w-1/2 mt-8 space-y-4">
-        @csrf
-        <div class="grid grid-cols-1 gap-2">
-            <label for="password" class="w-full mb-2 mt-2 text-sm font-medium ">Password</label>
-            <input type="text" name="password" id="password" class="bg-white rounded border-gray-300 p-2.5 focus:outline-none focus:ring-0 focus:border-rose-400" placeholder="Password">
-            @error('password')
-                <div class="ml-20 text-sm text-red-500 italic">{{ $message }}</div>
-            @enderror
+    <div class="text-2xl mb-4">Riwayat Pesanan</div>
+    <div class="w-full bg-white py-3 px-8 border shadow-sm mb-4">
+        <div class="grid grid-cols-4 gap-2 place-items-center text-gray-400 font-semibold">
+            <div>
+                Dikemas
+            </div>
+            <div>
+                Dikirim
+            </div>
+            <div>
+                Selesai
+            </div>
+            <div>
+                Dibatalkan
+            </div>
         </div>
-        <div class="grid grid-cols-1 gap-2">
-            <label for="password_confirmation" class="w-full mb-2 mt-2 text-sm font-medium ">Konfirmasi Password</label>
-            <input type="text" name="password_confirmation" id="password_confirmation" class="bg-white rounded border-gray-300 p-2.5 focus:outline-none focus:ring-0 focus:border-rose-400" placeholder="Password">
-            @error('password_confirmation')
-                <div class="ml-20 text-sm text-red-500 italic">{{ $message }}</div>
-            @enderror
+    </div>
+    @if (count($sukses) > 0)
+    @foreach ($sukses as $item)
+    <div class="w-full flex flex-row items-center px-8 py-4 bg-white border mt-8">
+        <div class="w-1/2 flex p-4 leading-normal">
+            <div class="w-2/5 flex flex-col">
+                <h5 class="font-semibold tracking-tight">No Transaksi</h5>
+                <h5 class="font-semibold tracking-tight">Metode Pembayaran</h5>
+                <p class="font-semibold">Total</p>
+                <p class="mb-3 font-semibold">
+                    Status
+                </p>
+            </div>
+            <div class="flex flex-col">
+                <h5 class="text-xl font-bold tracking-tight text-rose-600">{{ $item->id_transaksi }}</h5>
+                <h5 class="text-lg font-bold tracking-tight text-gray-900">Bank {{ strtoupper($item->metode) }}</h5>
+                <p class="font-semibold text-gray-700">Rp{{ number_format($item->total, 0, '', '.') }}</p>
+                @if ($item->status == 'pending')
+                <p class="mb-3 font-semibold text-rose-600">
+                    Belum Bayar
+                </p>
+                @elseif ($item->status == 'settlement')
+                <p class="mb-3 font-semibold text-rose-600">
+                    Berhasil
+                </p>
+                @else 
+                <p class="mb-3 font-semibold text-rose-600">
+                    Gagal
+                </p>
+                @endif
+            </div>
         </div>
-        <button type="submit" class="text-white bg-rose-600 hover:bg-rose-500 focus:ring-0 focus:outline-none font-medium rounded-sm text-sm w-full sm:w-auto px-5 py-2.5 text-center">Simpan</button>
-    </form>
+        <div class="w-1/2 flex justify-end items-center">
+            <a href="{{ route('user.riwayat.nota', ['id' => $item->uuid]) }}" class="px-8 py-2.5 bg-rose-600 text-white">Lihat</a>
+        </div>
+    </div>
+    @endforeach
+    @else
+    <div class="w-full grid place-content-center py-32">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-56 w-56 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg>
+        <span class="text-xl text-gray-300">Anda belum memiliki tagihan</span>
+    </div>
+    @endif
 </div>
 @endsection

@@ -108,6 +108,7 @@ class CheckoutController extends Controller
         $pesanan->id_alamat = $request->alamat;
         $pesanan->jumlah = $request->total;
         $pesanan->pengiriman = $request->paket;
+        $pesanan->ongkir = $request->ongkir;
         $pesanan->save();
 
         $data = MidtransController::bank_transfer($request->total, $request->metode_byr);

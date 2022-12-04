@@ -270,6 +270,7 @@
                 <input type="hidden" id="kirim-paket" name="paket">
                 <input type="hidden" id="metode_byr" name="metode_byr">
                 <input type="hidden" name="total">
+                <input type="hidden" name="ongkir">
                 <button type="submit" class="w-56 text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-600 focus:ring-0 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2">Buat Pesanan</button>
             </form>
             @else
@@ -281,6 +282,7 @@
                 <input type="hidden" value="{{ $qty }}" name="qty">
                 <input type="hidden" id="metode_byr" name="metode_byr">
                 <input type="hidden" name="total">
+                <input type="hidden" name="ongkir">
                 <button type="submit" class="w-56 text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-600 focus:ring-0 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2">Buat Pesanan</button>
             </form>
             @endif
@@ -603,6 +605,7 @@
             document.querySelector('#biaya-expedisi-2').classList.remove('hidden');
             var kirim = parseInt(total) + parseInt(biaya);
             var anka = kirim.toString();
+            document.querySelector('input[name=ongkir]').value = parseInt(biaya);
 
             document.querySelector('#harga-ongkir').innerHTML = "Rp"+formatRupiah(anka);
             
