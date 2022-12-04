@@ -14,9 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('transaksis', function (Blueprint $table) {
-            $table->string('id_transaksi', 16)->primary();
+            $table->id();
             $table->uuid('uuid');
             $table->string('id_pesanan');
+            $table->string('id_transaksi');
             $table->string('metode');
             $table->integer('total');
             $table->string('kode_bayar')->nullable();

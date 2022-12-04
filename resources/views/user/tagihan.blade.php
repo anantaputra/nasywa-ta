@@ -5,21 +5,26 @@
     <span class="text-2xl">Tagihan Pembayaran Anda</span>
     @if (count($tagihan) > 0)
     @foreach ($tagihan as $item)
-    <a href="{{ route('user.tagihan.bayar', ['id' => encrypt($item->id_transaksi)]) }}" class="w-full flex flex-row items-center px-8 py-4 bg-white border rounded-xl mt-8">
-        <img class="w-32 h-32" src="{{asset('upload/produk/'.$item->pesanannya->produknya->gambarnya[0]->gambar.'')}}" alt="">
+    <a href="{{ route('user.tagihan.bayar', ['id' => $item->uuid]) }}" class="w-full flex flex-row items-center px-8 py-4 bg-white border rounded-xl mt-8">
         <div class="w-3/4 flex flex-col justify-between p-4 leading-normal">
-            <h5 class="text-xl font-bold tracking-tight text-gray-900">{{ $item->pesanannya->produknya->nama_produk }}</h5>
-            <p class="mb-3 font-normal text-gray-700">x{{ $item->pesanannya->jumlah }}</p>
-            <p class="mb-3 font-semibold text-gray-700">Rp{{ number_format($item->total, 0, '', '.') }}</p>
+            <h5 class="text-xl font-bold tracking-tight text-rose-600">{{ $item->id_transaksi }}</h5>
+            <h5 class="text-lg font-bold tracking-tight text-gray-900">Bank {{ strtoupper($item->metode) }}</h5>
+            <p class="font-semibold text-gray-700">Rp{{ number_format($item->total, 0, '', '.') }}</p>
+            @if ($item->status == 'pending')
+            <p class="mb-3 font-semibold text-rose-600">
+                Belum Bayar
+            </p>
+            @elseif ($item->status == 'settlement')
+            <p class="mb-3 font-semibold text-rose-600">
+                Berhasil
+            </p>
+            @else 
+            <p class="mb-3 font-semibold text-rose-600">
+                Gagal
+            </p>
+            @endif
         </div>
         <div class="text-rose-600">
-            @if ($item->status == 'pending')
-                Belum Bayar
-            @elseif ($item->status == 'settlement')
-                Berhasil
-            @else 
-                Gagal
-            @endif
         </div>
     </a>
     @endforeach

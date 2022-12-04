@@ -41,7 +41,15 @@
 <div class="hidden md:flex md:space-x-2 md:px-3 lg:px-20">
     @auth
     <div class="flex items-center space-x-4">
-        <a href="#" class="w-10 border-r cursor-pointer">
+        <a href="{{ route('keranjang') }}" class="w-10 border-r cursor-pointer">
+            @php
+                $coun = 0;
+                $cart = App\Models\Keranjang::where('id_user', auth()->user()->id_user)->where('checkout', false)->get()->count();
+                $coun += $cart
+            @endphp
+            @if ($coun > 0)
+            <span class="absolute bg-rose-600 rounded-full py-0.5 px-1.5 text-white text-[0.75rem] -mt-3 ml-3">{{ $coun }}</span>
+            @endif
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
@@ -63,6 +71,9 @@
              @else 
               <li>
                 <a href="{{ route('user.profil') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
+              </li>
+              <li>
+                <a href="{{ route('user.tagihan') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Pesanan</a>
               </li>
              @endif
               <li>

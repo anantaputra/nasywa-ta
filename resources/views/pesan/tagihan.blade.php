@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="w-full flex justify-center py-8">
-    <div class="w-1/2 px-12 py-10 bg-white border rounded-xl space-y-4">
+    <div class="w-1/2 px-12 py-10 bg-white border space-y-4">
         <div class="flex justify-center text-2xl text-rose-600 font-semibold">
             Tagihan Pembayaran
         </div>
@@ -16,7 +16,7 @@
         </div>
         <div class="flex justify-between text-lg">
             <span>Metode Pembayaran:</span>
-            <span class="text-rose-600 font-semibold">{{ ($transaksi->metode != 'alfamart' || 'indomaret') ? 'bank '.$transaksi->metode : $transaksi->metode }}</span>
+            <span class="text-rose-600 font-semibold">Bank {{ strtoupper($transaksi->metode) }}</span>
         </div>
         <div class="flex justify-center">
             <span>No. Virtual Account</span>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminKategoriController;
 use App\Http\Controllers\Admin\AdminProdukController;
+use App\Http\Controllers\Api\MidtransController;
 use App\Http\Controllers\Api\RajaOngkirController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\User\AlamatController;
 use App\Http\Controllers\User\ProfilController;
+use App\Http\Controllers\User\TagihanUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +28,10 @@ use App\Http\Controllers\User\ProfilController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('tagi', function(){
+    $data = MidtransController::bank_transfer(20000, 'bni');
+    return $data;
+});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('detail/{id}', [HomeController::class, 'detail'])->name('detail');
@@ -57,7 +63,9 @@ Route::middleware('auth')->group(function(){
             Route::get('/');
         });
         Route::prefix('tagihan')->name('.tagihan')->group(function(){
-            Route::get('/');
+            Route::get('/', [TagihanUserController::class, 'index']);
+            Route::get('{id}', [TagihanUserController::class, 'detail'])->name('.detail');
+            Route::get('bayar/{id}', [TagihanUserController::class, 'bayar'])->name('.bayar');
         });
         Route::prefix('riwayat')->name('.riwayat')->group(function(){
             Route::get('/');
@@ -78,6 +86,7 @@ Route::middleware('auth')->group(function(){
     Route::prefix('checkout')->name('checkout')->group(function(){
         Route::get('{id}', [CheckoutController::class, 'checkout']);
         Route::get('keranjang', [CheckoutController::class, 'keranjang'])->name('.keranjang');
+        Route::post('simpan', [CheckoutController::class, 'simpan'])->name('.simpan');
     });
 });
 

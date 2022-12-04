@@ -203,7 +203,6 @@
         <div class="col-span-2 text-lg font-semibold">Metode Pembayaran</div>
         <div class="col-span-10 py-2 space-x-4">
             <button type="button" id="bank" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white ring-2 ring-rose-600 rounded border border-gray-200 hover:bg-rose-600 hover:text-white focus:z-10">Transfer Bank</button>
-            <button type="button" id="minimarket" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded border border-gray-200 hover:bg-rose-600 hover:text-white focus:z-10">Mini Market</button>
         </div>
     </div>
     <div class="grid grid-cols-1 bg-white border-y py-4 px-8 border-gray-200">
@@ -212,13 +211,6 @@
                 Pilih Bank
             </div>
             <div class="col-span-7 space-y-4">
-                <div class="flex items-center space-x-6">
-                    <input type="radio" value="bca" name="metode"> 
-                    <div class="w-12 h-12 border">
-                        <img src="{{ asset('img/bca.png') }}" alt="">
-                    </div>
-                    <span>Bank BCA</span>
-                </div>
                 <div class="flex items-center space-x-6">
                     <input type="radio" value="bri" name="metode"> 
                     <div class="w-12 h-12 border">
@@ -239,27 +231,6 @@
                         <img src="{{ asset('img/permata.png') }}" class="mt-4" alt="">
                     </div>
                     <span>Bank Permata</span>
-                </div>
-            </div>
-        </div>
-        <div id="list-minimarket" class="hidden grid grid-cols-9">
-            <div class="col-span-2 text-lg font-semibold">
-                
-            </div>
-            <div class="col-span-7 space-y-4">
-                <div class="flex items-center space-x-6">
-                    <input type="radio" value="alfamart" name="metode"> 
-                    <div class="w-12 h-12 border">
-                        <img src="{{ asset('img/alfa.png') }}" class="mt-3" alt="">
-                    </div>
-                    <span>Alfamart</span>
-                </div>
-                <div class="flex items-center space-x-6">
-                    <input type="radio" value="indomaret" name="metode"> 
-                    <div class="w-12 h-12 border">
-                        <img src="{{ asset('img/indomaret.png') }}" alt="">
-                    </div>
-                    <span>Indomaret</span>
                 </div>
             </div>
         </div>
@@ -292,18 +263,27 @@
     </div>
     <div class="grid grid-cols-1 bg-white rounded-b py-8 px-6 space-y-4">
         <div class="flex justify-end">
-            <form action="{{ route('pesan.buat') }}" method="post">
+            @if (isset($keranjang))
+            <form action="{{ route('checkout.simpan') }}" method="post">
                 @csrf
                 <input type="hidden" id="alamat-kirim" value="{{ $alamat[0]->id }}" name="alamat">
                 <input type="hidden" id="kirim-paket" name="paket">
-                @if (!isset($keranjang))
-                <input type="hidden" value="{{ $produk->id_produk }}" name="produk">
-                <input type="hidden" value="{{ $qty }}" name="qty">
-                @endif
                 <input type="hidden" id="metode_byr" name="metode_byr">
                 <input type="hidden" name="total">
                 <button type="submit" class="w-56 text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-600 focus:ring-0 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2">Buat Pesanan</button>
             </form>
+            @else
+            <form action="{{ route('pesan.buat') }}" method="post">
+                @csrf
+                <input type="hidden" id="alamat-kirim" value="{{ $alamat[0]->id }}" name="alamat">
+                <input type="hidden" id="kirim-paket" name="paket">
+                <input type="hidden" value="{{ $produk->id_produk }}" name="produk">
+                <input type="hidden" value="{{ $qty }}" name="qty">
+                <input type="hidden" id="metode_byr" name="metode_byr">
+                <input type="hidden" name="total">
+                <button type="submit" class="w-56 text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-600 focus:ring-0 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2">Buat Pesanan</button>
+            </form>
+            @endif
         </div>
     </div>
 </div>

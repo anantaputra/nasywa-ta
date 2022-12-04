@@ -11,4 +11,13 @@ class Pesanan extends Model
 {
     use HasFactory, Uuids, SoftDeletes;
 
+    public function keranjang()
+    {
+        return $this->hasMany(Keranjang::class, 'id_pesanan');
+    }
+
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'id_pesanan');
+    }
 }
