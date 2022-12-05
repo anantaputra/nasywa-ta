@@ -64,7 +64,7 @@ class RegisteredUserController extends Controller
         $register->password = bcrypt($request->password);
         $register->save();
 
-        $register->notify(new NewUser($register));
+        event(new Registered($user));
 
         $user = Auth::login($register);
 

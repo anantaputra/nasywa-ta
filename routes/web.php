@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function(){
         Route::post('/', [PesananController::class, 'pesan'])->name('.sekarang');
         Route::post('buat', [PesananController::class, 'pesan'])->name('.buat');
     });
-    Route::prefix('checkout')->name('checkout')->group(function(){
+    Route::prefix('checkout')->middleware('verified')->name('checkout')->group(function(){
         Route::get('{id}', [CheckoutController::class, 'checkout']);
         Route::get('keranjang', [CheckoutController::class, 'keranjang'])->name('.keranjang');
         Route::post('simpan', [CheckoutController::class, 'simpan'])->name('.simpan');
