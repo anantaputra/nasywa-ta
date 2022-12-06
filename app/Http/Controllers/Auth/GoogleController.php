@@ -44,7 +44,7 @@ class GoogleController extends Controller
                 $new_user->save();
 
                 Auth::login($new_user);
-                return redirect()->intended('/');
+                return redirect()->route('home');
             }
         } catch (Exception $e) {
             // dd($e->getMessage());
