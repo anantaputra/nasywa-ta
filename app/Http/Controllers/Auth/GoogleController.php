@@ -14,7 +14,7 @@ class GoogleController extends Controller
 {
     public function login()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->redirect()->route('home');
     }
 
     public function callback(){
