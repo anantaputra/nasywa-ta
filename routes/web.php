@@ -40,6 +40,7 @@ Route::get('produk', [ProdukController::class, 'index'])->name('produk');
 Route::get('kontak', [KontakController::class, 'index'])->name('kontak');
 Route::post('pesan-kirim', [KontakController::class, 'simpan'])->name('pesan.kirim');
 Route::get('google', [GoogleController::class, 'login'])->name('google');
+Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 
 Route::middleware('auth')->group(function(){
     Route::prefix('user')->name('user')->group(function(){
