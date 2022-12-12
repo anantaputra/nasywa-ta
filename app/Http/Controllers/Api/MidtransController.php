@@ -16,7 +16,7 @@ class MidtransController extends Controller
     {
         $client = new Client();
         if($bank == 'permata') {
-            $response = $client->post('https://api.sandbox.midtrans.com/v2/charge',
+            $response = $client->post('https://api.midtrans.com/v2/charge',
                 [
                     'headers' => [
                         'Accept' => 'application/json',
@@ -38,7 +38,7 @@ class MidtransController extends Controller
                 ]
             );
         } else {
-            $response = $client->post('https://api.sandbox.midtrans.com/v2/charge', 
+            $response = $client->post('https://api.midtrans.com/v2/charge', 
                 [
                     'headers' => [
                         'Accept' => 'application/json',
