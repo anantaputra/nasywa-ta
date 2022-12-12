@@ -49,7 +49,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
             </svg>
       
-            <span class="ml-3 text-sm font-medium"> Transaksi </span>
+            <span class="ml-3 text-sm font-medium"> Pembayaran </span>
         </a>
 
         <a href="{{ route('admin.retur') }}" class="flex items-center px-4 py-4 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 {{ (Request()->route()->getPrefix() == 'admin/retur') ? 'bg-gray-100 text-gray-700' : '' }}">
@@ -80,7 +80,7 @@
                 <span class="ml-3 text-sm font-medium"> Pesanan </span>
               </a>
               <a href="{{ route('admin.laporan.transaksi') }}" class="flex items-center px-4 py-1 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">    
-                <span class="ml-3 text-sm font-medium"> Transaksi </span>
+                <span class="ml-3 text-sm font-medium"> Pembayaran </span>
               </a>
               <a href="{{ route('admin.laporan.retur') }}" class="flex items-center px-4 py-1 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">    
                 <span class="ml-3 text-sm font-medium"> Retur </span>

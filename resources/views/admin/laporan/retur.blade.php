@@ -4,7 +4,7 @@
     
 <div class="w-full py-8">
     <div class="flex justify-between">
-        <span class="text-2xl">Daftar Permintaan Retur</span>
+        <span class="text-2xl">Laporan Retur</span>
     </div>
     <div class="w-full border border-gray-600 rounded mt-8">
         <table class="w-full text-sm divide-y divide-gray-600">

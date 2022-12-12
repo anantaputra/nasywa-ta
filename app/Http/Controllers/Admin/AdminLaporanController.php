@@ -20,4 +20,10 @@ class AdminLaporanController extends Controller
         $retur = Retur::all();
         return view('admin.laporan.retur', compact('retur'));
     }
+
+    public function transaksi()
+    {
+        $transaksi = Transaksi::all();
+        return view('admin.laporan.transaksi', compact('transaksi'));
+    }
 }

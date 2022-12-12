@@ -52,7 +52,10 @@
                     @endif
                   </td>
                   <td>
-
+                    @if ($item->status == 'pending')
+                    <a href="{{ route('admin.retur.terima', ['id' => $item->uuid]) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ">Terima</a>
+                    <a href="{{ route('admin.retur.tolak', ['id' => $item->uuid]) }}" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ">Tolak</a>
+                    @endif
                   </td>
                 </tr>
                 @php

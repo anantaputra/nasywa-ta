@@ -1,27 +1,28 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminHomeController;
-use App\Http\Controllers\Admin\AdminKategoriController;
-use App\Http\Controllers\Admin\AdminLaporanController;
-use App\Http\Controllers\Admin\AdminPesananController;
-use App\Http\Controllers\Admin\AdminProdukController;
-use App\Http\Controllers\Admin\AdminReturController;
-use App\Http\Controllers\Api\MidtransController;
-use App\Http\Controllers\Api\RajaOngkirController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\KeranjangController;
-use App\Http\Controllers\PesananController;
+use App\Http\Controllers\User\ReturController;
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\User\AlamatController;
 use App\Http\Controllers\User\ProfilController;
-use App\Http\Controllers\User\ReturController;
+use App\Http\Controllers\Api\MidtransController;
 use App\Http\Controllers\User\RiwayatController;
+use App\Http\Controllers\Api\RajaOngkirController;
+use App\Http\Controllers\Admin\AdminHomeController;
+use App\Http\Controllers\Admin\AdminReturController;
 use App\Http\Controllers\User\TagihanUserController;
+use App\Http\Controllers\Admin\AdminProdukController;
+use App\Http\Controllers\Admin\AdminLaporanController;
+use App\Http\Controllers\Admin\AdminPesananController;
+use App\Http\Controllers\Admin\AdminKategoriController;
+use App\Http\Controllers\Admin\AdminTransaksiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,10 +123,12 @@ Route::prefix('admin')->name('admin')->middleware('auth')->group(function(){
         Route::post('resi', [AdminPesananController::class, 'resi'])->name('.resi');
     });
     Route::prefix('transaksi')->name('.transaksi')->group(function(){
-        Route::get('/');
+        Route::get('/', [AdminTransaksiController::class, 'index']);
     });
     Route::prefix('retur')->name('.retur')->group(function(){
         Route::get('/', [AdminReturController::class, 'index']);
+        Route::get('terima/{id}', [AdminReturController::class, 'terima'])->name('.terima');
+        Route::get('tolak/{id}', [AdminReturController::class, 'tolak'])->name('.tolak');
     });
     Route::prefix('laporan')->name('.laporan')->group(function(){
         Route::prefix('pesanan')->name('.pesanan')->group(function(){

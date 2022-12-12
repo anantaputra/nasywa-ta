@@ -14,4 +14,20 @@ class AdminReturController extends Controller
 
         return view('admin.retur.index', compact('retur'));
     }
+
+    public function terima($id)
+    {
+        $retur = Retur::where('uuid', $id)->first();
+        $retur->status = 'accepted';
+        $retur->save();
+        return redirect()->back();
+    }
+
+    public function tolak($id)
+    {
+        $retur = Retur::where('uuid', $id)->first();
+        $retur->status = 'denied';
+        $retur->save();
+        return redirect()->back();
+    }
 }
