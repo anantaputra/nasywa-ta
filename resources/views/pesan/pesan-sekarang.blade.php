@@ -196,7 +196,7 @@
             <span class="text-xl text-rose-600" id="harga-ongkir">Rp{{ number_format($ttl, 0, '', '.') }}</span>
             @else
             <span class="text-sm text-gray-400 mr-2">Total Pesanan (1 Produk):</span> 
-            <span class="text-xl text-rose-600" id="harga-ongkir">Rp{{ number_format($ttl, 0, '', '.') }}</span>
+            <span class="text-xl text-rose-600" id="harga-ongkir">Rp{{ number_format($subtotal, 0, '', '.') }}</span>
             @endif
         </div>
     </div>
