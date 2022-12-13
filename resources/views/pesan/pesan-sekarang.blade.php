@@ -193,13 +193,14 @@
         <div class="flex justify-end items-center">
             @if (isset($keranjang))
             <span class="text-sm text-gray-400 mr-2">Total Pesanan ({{ $keranjang->count() }} Produk):</span> 
+            <span class="text-xl text-rose-600" id="harga-ongkir">Rp{{ number_format($ttl, 0, '', '.') }}</span>
             @else
             <span class="text-sm text-gray-400 mr-2">Total Pesanan (1 Produk):</span> 
-            @endif
             <span class="text-xl text-rose-600" id="harga-ongkir">Rp{{ number_format($ttl, 0, '', '.') }}</span>
+            @endif
         </div>
     </div>
-    <div class="grid grid-cols-12 bg-white rounded-t mt-4 py-6 px-8">
+    {{-- <div class="grid grid-cols-12 bg-white rounded-t mt-4 py-6 px-8">
         <div class="col-span-2 text-lg font-semibold">Metode Pembayaran</div>
         <div class="col-span-10 py-2 space-x-4">
             <button type="button" id="bank" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white ring-2 ring-rose-600 rounded border border-gray-200 hover:bg-rose-600 hover:text-white focus:z-10">Transfer Bank</button>
@@ -234,7 +235,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="grid grid-cols-1 bg-white border-b border-dashed border-gray-300 py-8 px-8 space-y-4">
         <div class="flex justify-end text-sm text-gray-400 space-x-8">
             <span>Subtotal Produk:</span>

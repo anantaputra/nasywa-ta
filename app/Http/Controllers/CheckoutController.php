@@ -49,13 +49,11 @@ class CheckoutController extends Controller
 
     public function keranjang()
     {
-        return 'ahi';
         $alamat = AlamatUser::where('id_user', auth()->user()->id_user)->get()->count();
         
         if ($alamat == 0) {
             return redirect()->route('user.alamat');
         } else {
-            return 'ji';
             $alamat = AlamatUser::where('id_user', auth()->user()->id_user)
                     ->where('utama', true)
                     ->get();
@@ -70,7 +68,6 @@ class CheckoutController extends Controller
                 $berat += $produk->berat * $item->jumlah;
             }
 
-            return $berat;
             if(count($alamat) > 0){
                 $jne = RajaOngkirController::get_ongkir($alamat[0]->kode_kota, 'jne', $berat);
 
